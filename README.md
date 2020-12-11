@@ -63,6 +63,8 @@ When the application is opened, the user will be presented with the option to cr
 
 ### Control Flow Diagram
 
+![terminal-app-control-flow](docs/terminal-app-control-flow.jpg)
+
 ## Implementation Plan
 
 The implementation plan for this project can be found [on Trello](https://trello.com/b/HWYFRejK/terminal-app)
