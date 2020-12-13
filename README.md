@@ -74,3 +74,5 @@ The implementation plan for this project can be found [on Trello](https://trello
 - steps to install the application
 - any dependencies required by the application to operate
 - any system/hardware requirements
+
+If I end up doing anything with cron jobs - mention installation of WSL / mac compatibility with cron?
