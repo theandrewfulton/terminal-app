@@ -1,0 +1,29 @@
+add task progress from command line
+
+e.g. task-tracker.sh "don't bite your nails" y
+
+- appropriate error handling from this if the task does not exist
+
+stretch goal - add functionality to specify how long a task should run for
+
+
+prompt for day and month of retrospective completion
+
+
+limit tasks to 5 to make life easier?
+
+
+need go back loop from 0 in decisions
+
+
+jmettraus / rufus scheduler
+
+
+scheduled cron jobs to open the app?
+- cron on macos?
+
+
+modules
+mixins
+classes
+methods
