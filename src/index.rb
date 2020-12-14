@@ -1,6 +1,17 @@
 require "tty-prompt"
 require "artii"
 
+# new task class
+class New_Task
+    # get short task name
+    # get description
+    # create text file
+    # save task name and description to text file
+end
+
+
+
+
 # Welcome message
 welcome_art = Artii::Base.new
 puts welcome_art.asciify ('Daily Tasks')
