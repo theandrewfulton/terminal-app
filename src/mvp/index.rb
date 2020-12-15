@@ -42,7 +42,11 @@ elsif input == 2
 elsif input == 3
     visualise_task
 elsif input == 4
-    delete_task
+    puts "which task would you like to delete?"
+    # list files in txt folder
+    # select a file
+    # ask for confirmation
+    # return to main menu
 elsif input == 5
     puts "Goodbye"
     exit
