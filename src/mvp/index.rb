@@ -42,7 +42,55 @@ elsif input == 2
 elsif input == 3
     visualise_task
 elsif input == 4
-    delete_task
+    puts "Here are your tasks"
+    # change directory to the text folder
+    Dir.chdir("txt")
+    # list files in txt folder
+    filenames = Dir.entries(".")
+    filenames.delete_if {|task| task == '.'}
+    filenames.delete_if {|task| task == '..'}
+        filenames.each do |task|
+        task.gsub!('_', ' ')
+        task.gsub!('.txt', '')
+    end
+    puts filenames
+    # select a file
+    puts "Which task would you like to delete?"
+    delete = gets.chomp
+    if filenames.include?(delete) == true
+         # ask for confirmation
+         puts "Are you sure you want to delete #{delete}? (Y/N)"
+         confirm = gets.chomp.downcase
+         if confirm == 'y'
+            # delete the file
+            file_name = delete + '.txt'
+            file_name.gsub!(' ', '_')
+            File.delete(file_name)
+            puts "Task deleted"
+            # change back to main directory
+            Dir.chdir("../")
+            options
+         elsif confirm == 'n'
+            # Clear the screen
+            system("clear")
+            puts "Task not deleted"
+            # change back to main directory
+            Dir.chdir("../")
+            options
+         else # Clear the screen
+            system("clear")
+            puts "Sorry, I didn't understand that. Please try again"
+            # change back to main directory
+            Dir.chdir("../")
+            options
+         end
+    else  # Clear the screen
+        system("clear")
+        puts "Sorry, we couldn't find a task with that name"
+        # change back to main directory
+        Dir.chdir("../")
+        options
+    end
 elsif input == 5
     puts "Goodbye"
     exit
