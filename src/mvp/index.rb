@@ -17,7 +17,7 @@ if input == 1
     system("clear")
     puts "What would you like to call this task?"
     puts "Please make it short and easy to remember"
-    task_name = gets.chomp
+    task_name = gets.chomp.downcase
     file_name = task_name + '.txt'
     file_name.gsub!(' ', '_')
     # change into text subdirectory
