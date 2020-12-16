@@ -48,3 +48,25 @@ input error message is a candidate for DRY
 stop input later than the current day?
 
 remove dates a task completed?
+
+
+issues with . , etc. in file names???
+
+
+error handling is more than just handling exceptions
+checking data dypes before exceptions can arise, etc.
+
+file not found error handling
+
+begin
+    File.read('balance.txt)
+
+rescue Errno::ENOENT
+puts "error: couldn't open bank balance
+system('touch balance.txt')
+
+end
+
+
+29th Feb 2021?
+30th Feb 2020?
