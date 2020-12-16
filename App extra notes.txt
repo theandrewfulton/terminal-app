@@ -27,3 +27,24 @@ modules
 mixins
 classes
 methods
+
+
+search directory and add text files to an array - then add array to menus?
+
+
+
+ delete(file_name, ...) → integer
+
+Deletes the named files, returning the number of names passed as arguments. Raises an exception on any error. Since the underlying implementation relies on the unlink(2) system call, the type of exception raised depends on its error type (see linux.die.net/man/2/unlink) and has the form of e.g. Errno::ENOENT.
+
+See also Dir.rmdir.
+
+
+Is there a way to have Dir.chdir as a module or something so you don't have to exit back out?
+
+input error message is a candidate for DRY
+
+
+stop input later than the current day?
+
+remove dates a task completed?
