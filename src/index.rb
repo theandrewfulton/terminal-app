@@ -1,3 +1,5 @@
+require 'date'
+
 # Menu method
 def menu
     # Welcome message
@@ -9,22 +11,26 @@ def menu
     puts "4. Delete an existing task"
     puts "5. Exit"
     # User input
-    input = gets.chomp.to_i
-
-    if input == 1
+    input = gets.chomp
+    case input.to_i
+    when 1
         new_task
-    elsif input == 2
+        menu
+    when 2
         existing_tasks
-    elsif input == 3
+        menu
+    when 3
         visualise_task
-    elsif input == 4
+    when 4
         delete_task
-    elsif input == 5
+        menu
+    when 5
         puts "Goodbye"
         exit
     else
         system("clear")
         puts "I didn't understand that. Please try again"
+        menu
     end
 end
 
@@ -43,8 +49,7 @@ def new_task
             # create new file
             File.new(file_name, "w+")
             puts "Hooray, you're ready to #{task_name} every day"
-        else
-            system("clear")
+        elseDate.iso8601(gets)
             puts "Sorry, there is already a task with this name"
         end
     end
@@ -72,40 +77,35 @@ def existing_tasks
             puts "2. A different day"
             input = gets.chomp.to_i
             if input == 1
-                time = Time.new
-                date = []
-                date << time.year
-                date << time.month
-                date << time.day
+                date = Date.today.to_s
                 file_name = complete + '.txt'
                 file_name.gsub!(' ', '_')
                 current_data = File.read(file_name)
                 # this is currently a string, need to work on staring as an array
                 if
-                    current_data.include?(date.to_s) == false
-                    current_data << date.to_s + ', '
+                    current_data.include?(date) == false
+                    current_data << date + ','
                     File.write(file_name, current_data)
                     puts current_data
                 else puts "Whoops, looks like you've already marked this task complete on this day"
                 end
             elsif input == 2
-                # going to need lots of validation here!
-                date = []
-                puts "Year?"
-                date << gets.chomp.to_i
-                puts "Month?"
-                date << gets.chomp.to_i
-                puts "Day?"
-                date << gets.chomp.to_i
-                file_name = complete + '.txt'
-                file_name.gsub!(' ', '_')
-                current_data = File.read(file_name)
-                # this is currently a string, need to work on staring as an array
-                if
-                current_data.include?(date.to_s) == false
-                current_data << date.to_s + ', '
-                File.write(file_name, current_data)
-                else puts "Whoops, looks like you've already marked this task complete on this day"
+                puts "Please add the date you completed the task in the format YYYY-MM-DD"
+               date = Date.iso8601(gets)
+                #    Opportunity for error handling!
+                if date > Date.today
+                    puts "Hey there time traveller! It looks like this is in the future"
+                    puts "Please try again"
+                else 
+                    file_name = complete + '.txt'
+                    file_name.gsub!(' ', '_')
+                    current_data = File.read(file_name)
+                    # this is currently a string, need to work on staring as an array
+                    if current_data.include?(date.to_s) == false
+                        current_data << date.to_s + ', '
+                        File.write(file_name, current_data)
+                        else puts "Whoops, looks like you've already marked this task complete on this day"
+                    end
                 end
             else  # Clear the screen
                 system("clear")
