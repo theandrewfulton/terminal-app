@@ -38,7 +38,55 @@ if input == 1
         options
     end
 elsif input == 2
-    modify_task
+    puts "Here are your tasks"
+    # change directory to the text folder
+    Dir.chdir("txt")
+    # list files in txt folder
+    filenames = Dir.entries(".")
+    filenames.delete_if {|task| task == '.'}
+    filenames.delete_if {|task| task == '..'}
+        filenames.each do |task|
+        task.gsub!('_', ' ')
+        task.gsub!('.txt', '')
+    end
+    puts filenames
+     # select a file
+    puts "Did you complete this today or a different day?"
+    puts "1. Today"
+    puts "2. A different day"
+    input = gets.chomp.to_i
+    if input == 1
+        time = Time.new
+        date = []
+        date << time.year
+        date << time.month
+        date << time.day
+        p date
+    elsif input == 2
+    # if input is 2
+    else  # Clear the screen
+        system("clear")
+        puts "Sorry, we couldn't find a task with that name"
+        # change back to main directory
+        Dir.chdir("../")
+        options
+    end
+     puts "What did you do today?"
+       complete = gets.chomp
+    if filenames.include?(complete) == true
+        # read array saved in file
+        # add array entry
+        # write array back to file
+        # change back to main directory
+        Dir.chdir("../")
+        options
+    else  # Clear the screen
+        system("clear")
+        puts "Sorry, we couldn't find a task with that name"
+        # change back to main directory
+        Dir.chdir("../")
+        options
+    end
 elsif input == 3
     visualise_task
 elsif input == 4
