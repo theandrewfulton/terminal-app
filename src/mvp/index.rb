@@ -45,48 +45,57 @@ elsif input == 2
     filenames = Dir.entries(".")
     filenames.delete_if {|task| task == '.'}
     filenames.delete_if {|task| task == '..'}
-        filenames.each do |task|
+    filenames.each do |task|
         task.gsub!('_', ' ')
         task.gsub!('.txt', '')
     end
     puts filenames
-     # select a file
-    puts "Did you complete this today or a different day?"
-    puts "1. Today"
-    puts "2. A different day"
-    input = gets.chomp.to_i
-    if input == 1
-        time = Time.new
-        date = []
-        date << time.year
-        date << time.month
-        date << time.day
-        p date
-    elsif input == 2
-    # if input is 2
-    else  # Clear the screen
-        system("clear")
-        puts "Sorry, we couldn't find a task with that name"
-        # change back to main directory
-        Dir.chdir("../")
-        options
-    end
-     puts "What did you do today?"
-       complete = gets.chomp
-    if filenames.include?(complete) == true
-        # read array saved in file
-        # add array entry
-        # write array back to file
-        # change back to main directory
-        Dir.chdir("../")
-        options
-    else  # Clear the screen
-        system("clear")
-        puts "Sorry, we couldn't find a task with that name"
-        # change back to main directory
-        Dir.chdir("../")
-        options
-    end
+    puts "What did you do today?"
+    complete = gets.chomp
+     if filenames.include?(complete) == true
+         # read array saved in file
+         # add array entry
+         # write array back to file
+         puts "Did you complete this today or a different day?"
+         puts "1. Today"
+         puts "2. A different day"
+         input = gets.chomp.to_i
+         if input == 1
+            time = Time.new
+            date = []
+            date << time.year
+            date << time.month
+            date << time.day
+            file_name = complete + '.txt'
+            file_name.gsub!(' ', '_')
+            current_data = File.read(file_name).to_a
+            puts current_data.class
+            if
+            # current date not already entered
+            current_data << date.to_s + ', '
+            File.write(file_name, current_data)
+            puts current_data
+            else puts "Whoops, looks like you've already marked this task complete on this day"
+            end
+         elsif input == 2
+         # if input is 2
+         else  # Clear the screen
+            system("clear")
+            puts "Sorry, we couldn't find a task with that name"
+            # change back to main directory
+            Dir.chdir("../")
+            options
+         end
+         # change back to main directory
+         Dir.chdir("../")
+         options
+     else  # Clear the screen
+         system("clear")
+         puts "Sorry, we couldn't find a task with that name"
+         # change back to main directory
+         Dir.chdir("../")
+         options
+     end
 elsif input == 3
     visualise_task
 elsif input == 4
