@@ -68,16 +68,34 @@ elsif input == 2
             date << time.day
             file_name = complete + '.txt'
             file_name.gsub!(' ', '_')
-            current_data = File.read(file_name).to_a
-            puts current_data.class
+            current_data = File.read(file_name)
+            # this is currently a string, need to work on staring as an array
             if
-            # current date not already entered
+            current_data.include?(date.to_s) == false
             current_data << date.to_s + ', '
             File.write(file_name, current_data)
             puts current_data
             else puts "Whoops, looks like you've already marked this task complete on this day"
             end
          elsif input == 2
+            # going to need lots of validation here!
+            date = []
+            puts "Year?"
+            date << gets.chomp.to_i
+            puts "Month?"
+            date << gets.chomp.to_i
+            puts "Day?"
+            date << gets.chomp.to_i
+            file_name = complete + '.txt'
+            file_name.gsub!(' ', '_')
+            current_data = File.read(file_name)
+            # this is currently a string, need to work on staring as an array
+            if
+            current_data.include?(date.to_s) == false
+            current_data << date.to_s + ', '
+            File.write(file_name, current_data)
+            else puts "Whoops, looks like you've already marked this task complete on this day"
+            end
          # if input is 2
          else  # Clear the screen
             system("clear")
