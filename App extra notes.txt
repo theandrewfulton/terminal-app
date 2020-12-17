@@ -109,3 +109,5 @@ downcase on all inputs
 change where whitespaces is saved so it doesn't get turned into an array
 
 graceful exit from viewing task?
+
+everything needs to be downcase!
