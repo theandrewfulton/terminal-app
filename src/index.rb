@@ -1,10 +1,13 @@
 require 'date'
 require 'time'
 require 'terminal-table'
+require 'artii'
 
 # Menu method
 def menu
     # Welcome message
+    welcome_art = Artii::Base.new
+    puts welcome_art.asciify ('Daily Tasks')
     puts "Welcome to the Daily Task Tracker"
     puts "What would you like to do today?"
     puts "1. Create a new task to track"
@@ -135,7 +138,7 @@ def visualise_task
             task.gsub!('.txt', '')
         end
         puts filenames
-        puts "What did you do today?"
+        puts "Which task would you like to see?"
         complete = gets.chomp
         if filenames.include?(complete) == true
             file_name = complete + '.txt'
@@ -148,18 +151,20 @@ def visualise_task
             data_array.each do |date|
                 dates_array << date.split('-')
             end
-            # count array and output number of entries
-            puts "You have completed this task #{data_array.count} times"
+            
             # ignore all array entries that aren't for the current year
             date = Time.new
             date = date.strftime('%Y')
             dates_array.delete_if {|year| year[0] != date}
+            # keep the month entry
             dates_array.each do |date|
                 date.delete_at(0)
                 date.delete_at(1)
             end
+            # flatten the array to a single level
             dates_array =  dates_array.flatten(1)
             
+            # Month arrays
             january = ["January", ""]
             february = ["February", ""]
             march = ["March", ""]
@@ -172,40 +177,45 @@ def visualise_task
             october = ["October", ""]
             november = ["November", ""]
             december = ["December", ""]
-
+            # For every entry, add an asterisk (*) in index position 1 of the corresponding month array
             dates_array.each do |month|
                 if month == '01'
-                    january[1] += "*"
+                    january[1] += " * "
                 elsif month == '02'
-                    february[1] += "*"
+                    february[1] += " * "
                 elsif month == '03'
-                    march[1] += "*"
+                    march[1] += " * "
                 elsif month == '04'
-                    april[1] += "*"
+                    april[1] += " * "
                 elsif month == '05'
-                    may[1] += "*"
+                    may[1] += " * "
                 elsif month == '06'
-                    june[1] += "*"
+                    june[1] += " * "
                 elsif month == '07'
-                    july[1] += "*"
+                    july[1] += " * "
                 elsif month == '08'
-                    august[1] += "*"
+                    august[1] += " * "
                 elsif month == '09'
-                    september[1] += "*"
+                    september[1] += " * "
                 elsif month == '10'
-                    october[1] += "*"
+                    october[1] += " * "
                 elsif month == '11'
-                    november[1] += "*"
+                    november[1] += " * "
                 elsif month == '12'
-                    december[1] += "*"
+                    december[1] += " * "
                 end
             end
-
+            # add each month array to the rows array for terminal-table
             rows = [january, february, march, april, may, june, july, august, september, october, november, december]
-            
-            table = Terminal::Table.new :rows => rows
-            # make some artii
+            # create the table with the year in the title using Artii
+            year_art = Artii::Base.new
+            table = Terminal::Table.new :title => "#{year_art.asciify(date)}", :rows => rows
+            # print the table
             puts table
+            # count the array for the current year
+            puts "This task was successfully completed #{dates_array.count} times in #{date}"
+            # count the original array and output number of entries
+            puts "You have completed this task #{data_array.count} times overall"
 
         else  # Clear the screen
             system("clear")
