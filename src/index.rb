@@ -46,18 +46,23 @@ def new_task
     puts "What would you like to call this task?"
     puts "Please make it short and easy to remember"
     task_name = gets.chomp.downcase
-    file_name = task_name + '.txt'
-    file_name.gsub!(' ', '_')
-    # change into text subdirectory
-    Dir.chdir('txt') do
-        #does file already exist?
-        if File.exist?(file_name) == false
-            # create new file
-            File.new(file_name, "w+")
-            puts "Hooray, you're ready to #{task_name} every day"
-        else Date.iso8601(gets)
-            puts "Sorry, there is already a task with this name"
+    dot = task_name.include? "."
+    if dot == false
+        file_name = task_name + '.txt'
+        file_name.gsub!(' ', '_')
+        # change into text subdirectory
+        Dir.chdir('txt') do
+            #does file already exist?
+            if File.exist?(file_name) == false
+                # create new file
+                File.new(file_name, "w+")
+                puts "Hooray, you're ready to #{task_name} every day"
+            else
+                puts "Sorry, there is already a task with this name"
+            end
         end
+    else
+        puts "Sorry, the name can't include a '.'"
     end
 end
 
@@ -97,8 +102,13 @@ def existing_tasks
                 end
             elsif input == 2
                 puts "Please add the date you completed the task in the format YYYY-MM-DD"
-               date = Date.iso8601(gets)
-                #    Opportunity for error handling!
+                # exception handling when date input doesn't meet ISO8601 format
+                begin
+                    date = Date.iso8601(gets)
+                rescue
+                    puts "Whoops, we didn't get that. Please make sure the date is in YYYY-MM-DD format"
+                    puts "e.g. 2020-12-18"
+                end
                 if date > Date.today
                     puts "Hey there time traveller! It looks like this is in the future"
                     puts "Please try again"
@@ -115,7 +125,7 @@ def existing_tasks
                 end
             else  # Clear the screen
                 system("clear")
-                puts "Sorry, we couldn't find a task with that name"
+                puts "Sorry, we didn't understand that"
             end
         else  # Clear the screen
             system("clear")
