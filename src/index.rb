@@ -1,4 +1,5 @@
 require 'date'
+require 'time'
 
 # Menu method
 def menu
@@ -49,7 +50,7 @@ def new_task
             # create new file
             File.new(file_name, "w+")
             puts "Hooray, you're ready to #{task_name} every day"
-        elseDate.iso8601(gets)
+        else Date.iso8601(gets)
             puts "Sorry, there is already a task with this name"
         end
     end
@@ -111,6 +112,53 @@ def existing_tasks
                 system("clear")
                 puts "Sorry, we couldn't find a task with that name"
             end
+        else  # Clear the screen
+            system("clear")
+            puts "Sorry, we couldn't find a task with that name"
+        end
+    end
+end
+
+# visualise tasks method
+def visualise_task
+    puts "Here are your tasks"
+    # change directory to the text folder
+    Dir.chdir("txt") do
+        # list files in txt folder
+        filenames = Dir.entries(".")
+        filenames.delete_if {|task| task == '.'}
+        filenames.delete_if {|task| task == '..'}
+        filenames.each do |task|
+            task.gsub!('_', ' ')
+            task.gsub!('.txt', '')
+        end
+        puts filenames
+        puts "What did you do today?"
+        complete = gets.chomp
+        if filenames.include?(complete) == true
+            file_name = complete + '.txt'
+            file_name.gsub!(' ', '_')
+            # read file
+            current_data = File.read(file_name)
+            # convert file contents to array
+            data_array = current_data.split(',')
+            p data_array
+            dates_array = []
+            data_array.each do |date|
+                dates_array << date.split('-')
+            end
+            p data_array
+            p dates_array
+            # count array and output number of entries
+            puts "You have completed this task #{data_array.count} times"
+            # ignore all array entries that aren't for the current year
+            date = Time.new
+            date = date.strftime('%Y')
+            dates_array.delete_if {|year| year[0] != date}
+            p dates_array
+            # display array entires for each month in a table
+
+
         else  # Clear the screen
             system("clear")
             puts "Sorry, we couldn't find a task with that name"
