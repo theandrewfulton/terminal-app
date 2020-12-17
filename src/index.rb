@@ -1,5 +1,6 @@
 require 'date'
 require 'time'
+require 'terminal-table'
 
 # Menu method
 def menu
@@ -22,6 +23,7 @@ def menu
         menu
     when 3
         visualise_task
+        menu
     when 4
         delete_task
         menu
@@ -103,7 +105,7 @@ def existing_tasks
                     current_data = File.read(file_name)
                     # this is currently a string, need to work on staring as an array
                     if current_data.include?(date.to_s) == false
-                        current_data << date.to_s + ', '
+                        current_data << date.to_s + ','
                         File.write(file_name, current_data)
                         else puts "Whoops, looks like you've already marked this task complete on this day"
                     end
@@ -142,22 +144,68 @@ def visualise_task
             current_data = File.read(file_name)
             # convert file contents to array
             data_array = current_data.split(',')
-            p data_array
             dates_array = []
             data_array.each do |date|
                 dates_array << date.split('-')
             end
-            p data_array
-            p dates_array
             # count array and output number of entries
             puts "You have completed this task #{data_array.count} times"
             # ignore all array entries that aren't for the current year
             date = Time.new
             date = date.strftime('%Y')
             dates_array.delete_if {|year| year[0] != date}
-            p dates_array
-            # display array entires for each month in a table
+            dates_array.each do |date|
+                date.delete_at(0)
+                date.delete_at(1)
+            end
+            dates_array =  dates_array.flatten(1)
+            
+            january = ["January", ""]
+            february = ["February", ""]
+            march = ["March", ""]
+            april = ["April", ""]
+            may = ["May", ""]
+            june = ["June", ""]
+            july = ["July", ""]
+            august = ["August", ""]
+            september = ["September", ""]
+            october = ["October", ""]
+            november = ["November", ""]
+            december = ["December", ""]
 
+            dates_array.each do |month|
+                if month == '01'
+                    january[1] += "*"
+                elsif month == '02'
+                    february[1] += "*"
+                elsif month == '03'
+                    march[1] += "*"
+                elsif month == '04'
+                    april[1] += "*"
+                elsif month == '05'
+                    may[1] += "*"
+                elsif month == '06'
+                    june[1] += "*"
+                elsif month == '07'
+                    july[1] += "*"
+                elsif month == '08'
+                    august[1] += "*"
+                elsif month == '09'
+                    september[1] += "*"
+                elsif month == '10'
+                    october[1] += "*"
+                elsif month == '11'
+                    november[1] += "*"
+                elsif month == '12'
+                    december[1] += "*"
+                end
+            end
+
+            rows = [january, february, march, april, may, june, july, august, september, october, november, december]
+            
+            table = Terminal::Table.new :rows => rows
+            # make some artii
+            puts table
 
         else  # Clear the screen
             system("clear")
