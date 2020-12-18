@@ -31,6 +31,8 @@ Note: Ensure that your features above allow you to demonstrate your understandin
 - loops and conditional control structures
 - error handling
 
+#### Menu
+
 #### Create a new task to track
 
 Users have the option of creating a new task to track and input a name for the task. For example "Don't bite your nails". This will be persistent when the user exits the app and re-opens it.
@@ -71,8 +73,59 @@ The implementation plan for this project can be found [on Trello](https://trello
 
 ## Help Documentation
 
-- steps to install the application
-- any dependencies required by the application to operate
-- any system/hardware requirements
+### Dependencies
 
-If I end up doing anything with cron jobs - mention installation of WSL / mac compatibility with cron?
+Daily Task Tracker has only been tested in a unix-like environment and no guarantees can be made about how well it will run (if at all) on other operating systems. For this reason, if running Windows, it is recommended that it is run inside Ubuntu 20.04 LTS, [available from the Microsoft Store](https://www.microsoft.com/en-au/p/ubuntu-2004-lts/9n6svws3rx71).
+
+Daily Task Tracker requires Ruby to be installed. Installation instructions for various operating systems can be found [in the official documentation](https://www.ruby-lang.org/en/documentation/installation/).
+
+
+### Installation
+
+Clone the repository with git:
+
+```git clone https://github.com/theandrewfulton/terminal-app.git```
+
+
+Alternatively you can download and extract the files from Github:
+
+![github-download](docs/github-download.jpg)
+
+or from the command line:
+
+```bash
+wget https://github.com/theandrewfulton/terminal-app/archive/main.zip
+unzip main.zip
+```
+### Running Daily Task Tracker
+
+Open a terminal emulator in the directory you saved the zip file or where you cloned the git repository.
+
+Navigate to the src directory and run ```install-run.sh```:
+
+```bash
+cd terminal-app-main/src
+./install-run.sh
+```
+
+Git tracks whether a file is executable, however if you run into issues here, try making the script executable with ```chmod +x install-run.sh```
+
+This script installs and runs the ```bundler``` gem for Ruby, installs additional gems required by Daily Task Tracker and then launches the application.
+
+### In-application Help
+
+The information in this section can also be accessed with the commands: ```./install-run.sh --help``` and ```./install-run.sh -h```
+
+<!-- Welcome to Daily Task Tracker! When you have finished with this help guide, you can open the application with ./install-run.sh -->
+
+Navigate through the menus using the arrow keys. Then use Enter to make a selection.
+
+When you are prompted to select a task, please ensure you type it exactly and then press Enter. If you type something Daily Task Tracker doesn't understand, you will be returned to the main menu.
+
+If you are prompted to type a date, please ensure it is in the format "YYYY-MM-DD".
+
+Some prompts may require you to answer Yes or No. In this case, you will need to type Y for Yes or N for No, followed by Enter.
+
+If you have any questions or need help, please contact the developer on Twitter at [twitter.com/theandrewfulton](https://twitter.com/theandrewfulton)
+
+Thank you and have fun!
