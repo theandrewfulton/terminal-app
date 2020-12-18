@@ -67,6 +67,8 @@ Errors are handled gracefully by providing useful feedback about the problem, th
 
 The implementation plan for this project can be found [on Trello](https://trello.com/b/HWYFRejK/terminal-app)
 
+User stories were added to the Trello board and formed the basis of the features outlined above. These features, along with additional tasks for the purposes of assessment. Each task card was further broken down into a checklist of at least 5 items, and categorised according to priority, whether it was documentation, code or presentation related, and the expected time to complete the task. Each task card was then progressively moved from the To Do, to In Progress to Complete lists as they were worked on. The checklists for each card were also progressively updated to track progress at a more granular level.
+
 ## Help Documentation
 
 ### Dependencies

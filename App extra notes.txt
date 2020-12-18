@@ -114,3 +114,5 @@ everything needs to be downcase!
 
 
 can you have "" and other characters in a filename?
+
+mention testing in README
