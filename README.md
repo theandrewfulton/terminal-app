@@ -69,6 +69,22 @@ The implementation plan for this project can be found [on Trello](https://trello
 
 User stories were added to the Trello board and formed the basis of the features outlined above. These features, along with additional tasks for the purposes of assessment. Each task card was further broken down into a checklist of at least 5 items, and categorised according to priority, whether it was documentation, code or presentation related, and the expected time to complete the task. Each task card was then progressively moved from the To Do, to In Progress to Complete lists as they were worked on. The checklists for each card were also progressively updated to track progress at a more granular level.
 
+The trello board as at the 18th December 2020:
+![trello-18-12](docs/trello-18-12.jpg)
+
+An example of checklist completion from the trello card for the task tracking feature:
+
+![trello-task-tracking](docs/trello-task-checklist.jpg)
+
+
+And another example from the Presentation card:
+
+![trello-presentation-checklist](docs/trello-presentation-checklist.jpg)
+
+The list of available labels for Trello Cards is as follows:
+
+![trello-labels](docs/trello-labels.jpg)
+
 ## Help Documentation
 
 ### Dependencies
@@ -76,7 +92,6 @@ User stories were added to the Trello board and formed the basis of the features
 Daily Task Tracker has only been tested in a unix-like environment and no guarantees can be made about how well it will run (if at all) on other operating systems. For this reason, if running Windows, it is recommended that it is run inside Ubuntu 20.04 LTS, [available from the Microsoft Store](https://www.microsoft.com/en-au/p/ubuntu-2004-lts/9n6svws3rx71).
 
 Daily Task Tracker requires Ruby to be installed. Installation instructions for various operating systems can be found [in the official documentation](https://www.ruby-lang.org/en/documentation/installation/).
-
 
 ### Installation
 

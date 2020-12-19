@@ -102,11 +102,9 @@ end
 
 
 lots of trello screenshots!
-if statements are triangles, not diamonds!
+
 
 downcase on all inputs
-
-change where whitespaces is saved so it doesn't get turned into an array
 
 graceful exit from viewing task?
 
