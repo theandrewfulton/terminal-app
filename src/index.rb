@@ -1,7 +1,13 @@
+# required files
+require_relative 'prompts'
+require_relative 'transform'
+
+# required ruby classes and gems
 require 'date'
 require 'time'
 require 'terminal-table'
 require 'artii'
+require 'tty-prompt'
 
 # Help method
 def help
@@ -22,136 +28,6 @@ If you have any questions or need help, please contact the developer on Twitter 
 Thank you and have fun!"
 end
 
-# Menu method
-def menu
-    # Welcome message
-    welcome_art = Artii::Base.new
-    puts welcome_art.asciify ('Daily Tasks')
-    puts "Welcome to the Daily Task Tracker"
-    puts "What would you like to do today?"
-    puts "1. Create a new task to track"
-    puts "2. Select an existing task to track"
-    puts "3. Show a task visually"
-    puts "4. Delete an existing task"
-    puts "5. Exit"
-    # User input
-    input = gets.chomp
-    case input.to_i
-    when 1
-        new_task
-        menu
-    when 2
-        existing_tasks
-        menu
-    when 3
-        visualise_task
-        menu
-    when 4
-        delete_task
-        menu
-    when 5
-        puts "Goodbye"
-        exit
-    else
-        system("clear")
-        puts "I didn't understand that. Please try again"
-        menu
-    end
-end
-
-# new task method
-def new_task
-    system("clear")
-    puts "What would you like to call this task?"
-    puts "Please make it short and easy to remember"
-    task_name = gets.chomp.downcase
-    dot = task_name.include? "."
-    if dot == false
-        file_name = task_name + '.txt'
-        file_name.gsub!(' ', '_')
-        # change into text subdirectory
-        Dir.chdir('txt') do
-            #does file already exist?
-            if File.exist?(file_name) == false
-                # create new file
-                File.new(file_name, "w+")
-                puts "Hooray, you're ready to #{task_name} every day"
-            else
-                puts "Sorry, there is already a task with this name"
-            end
-        end
-    else
-        puts "Sorry, the name can't include a '.'"
-    end
-end
-
-# existing tasks method
-def existing_tasks
-    puts "Here are your tasks"
-    # change directory to the text folder
-    Dir.chdir("txt") do
-        # list files in txt folder
-        filenames = Dir.entries(".")
-        filenames.delete_if {|task| task == '.'}
-        filenames.delete_if {|task| task == '..'}
-        filenames.each do |task|
-            task.gsub!('_', ' ')
-            task.gsub!('.txt', '')
-        end
-        puts filenames
-        puts "What did you do today?"
-        complete = gets.chomp
-        if filenames.include?(complete) == true
-            puts "Did you complete this today or a different day?"
-            puts "1. Today"
-            puts "2. A different day"
-            input = gets.chomp.to_i
-            if input == 1
-                date = Date.today.to_s
-                file_name = complete + '.txt'
-                file_name.gsub!(' ', '_')
-                current_data = File.read(file_name)
-                # this is currently a string, need to work on staring as an array
-                if
-                    current_data.include?(date) == false
-                    current_data << date + ','
-                    File.write(file_name, current_data)
-                    puts current_data
-                else puts "Whoops, looks like you've already marked this task complete on this day"
-                end
-            elsif input == 2
-                puts "Please add the date you completed the task in the format YYYY-MM-DD"
-                # exception handling when date input doesn't meet ISO8601 format
-                begin
-                    date = Date.iso8601(gets)
-                rescue
-                    puts "Whoops, we didn't get that. Please make sure the date is in YYYY-MM-DD format"
-                    puts "e.g. 2020-12-18"
-                end
-                if date > Date.today
-                    puts "Hey there time traveller! It looks like this is in the future"
-                    puts "Please try again"
-                else 
-                    file_name = complete + '.txt'
-                    file_name.gsub!(' ', '_')
-                    current_data = File.read(file_name)
-                    # this is currently a string, need to work on staring as an array
-                    if current_data.include?(date.to_s) == false
-                        current_data << date.to_s + ','
-                        File.write(file_name, current_data)
-                        else puts "Whoops, looks like you've already marked this task complete on this day"
-                    end
-                end
-            else  # Clear the screen
-                system("clear")
-                puts "Sorry, we didn't understand that"
-            end
-        else  # Clear the screen
-            system("clear")
-            puts "Sorry, we couldn't find a task with that name"
-        end
-    end
-end
 
 # visualise tasks method
 def visualise_task
@@ -295,6 +171,8 @@ def delete_task
     end
 end
 
+
+
 # Clear the screen
 system("clear")
 # command line arguments
@@ -305,5 +183,6 @@ def gets
 if ARGV[0] == "-h" || ARGV[0] == "--help"
 		puts help
 		exit
-else menu
+else
+    menu_prompt
 end
