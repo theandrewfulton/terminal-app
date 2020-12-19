@@ -3,9 +3,9 @@ def menu_prompt
     @prompt = TTY::Prompt.new
     # Welcome message
     welcome_art = Artii::Base.new
-    puts welcome_art.asciify ('Daily Tasks')
+    title = Pastel.new
+    puts title.on_blue(welcome_art.asciify ('Daily Tasks'))
     puts "Welcome to the Daily Task Tracker"
-    puts "What would you like to do today?"
     input = @prompt.select("\n What would you like to do?\n") do |menu|
         menu.choice "Create a new task to track", 1
         menu.choice "Select an existing task to track", 2
@@ -20,15 +20,15 @@ def menu_prompt
             menu_prompt
         when 2
             existing_tasks
-            # menu
+            menu_prompt
         when 3
             visualise_task
-            # menu
+            menu_prompt
         when 4
             delete_task
-            # menu
+            menu_prompt
         when 5
-            puts "Goodbye"
+            message_text("\nGoodbye\n")
             exit
         # else
         #     system("clear")
@@ -58,9 +58,11 @@ def new_task
         if File.exist?(@file_name) == false
             # create new file
             File.new(@file_name, "w+")
-            puts "Hooray, you're ready to #{@input} every day"
+            success_text("Hooray, you're ready to #{@input} every day\n")
+            # puts "Hooray, you're ready to #{@input} every day"
         else
-            puts "Sorry, there is already a task with this name"
+            error_text("Sorry, there is already a task with this name")
+            # puts "Sorry, there is already a task with this name"
         end
     end
 end
@@ -111,7 +113,18 @@ end
 
 # check if task is complete
 def check_task_complete
-    
+    text_file
+    current_data = File.read(@file_name)
+    exists = current_data.include?(@date)
+    if
+        current_data.include?(date) == false
+        current_data << date + ','
+        File.write(file_name, current_data)
+        puts current_data
+    else
+        puts "Whoops, looks like you've already marked this task complete on this day"
+    end
+
 end
 
 # existing tasks method
@@ -122,13 +135,16 @@ def existing_tasks
     Dir.chdir("txt") do
          select_file
             if @filenames.include?(@input) == true
-                input = @prompt.select("When did you complete #{@input}?") do |menu|
+                @input = @prompt.select("When did you complete #{@input}?") do |menu|
                     menu.choice "Today", 1
                     menu.choice "A different day", 2
                     menu.choice "Go back", 3
                 end
-                case input
+                case @input
                 when 1
+                    @date = Date.today.to_s
+                    check_task_complete
+                    current_data = File.read(@file_name)
                 when 2
                 when 3
                 end
@@ -151,7 +167,7 @@ def existing_tasks
         #         else puts "Whoops, looks like you've already marked this task complete on this day"
         #         end
         #     elsif input == 2
-        #         puts "Please add the date you completed the task in the format YYYY-MM-DD"
+        #        green puts "Please add the date you completed the task in the format YYYY-MM-DD"
         #         # exception handling when date input doesn't meet ISO8601 format
         #         begin
         #             date = Date.iso8601(gets)
@@ -172,7 +188,7 @@ def existing_tasks
         #                 File.write(file_name, current_data)
         #                 else puts "Whoops, looks like you've already marked this task complete on this day"
         #             end
-        #         end
+        #        green end
         #     else  # Clear the screen
         #         system("clear")
         #         puts "Sorry, we didn't understand that"
@@ -182,4 +198,23 @@ def existing_tasks
         #     puts "Sorry, we couldn't find a task with that name"
         end
     end
+end
+
+
+# error text
+def error_text(text)
+    error = Pastel.new
+    puts error.white.on_red.bold(text)
+end
+
+# success text
+def success_text(text)
+    success = Pastel.new
+    puts success.black.on_bright_green.bold(text)
+end
+
+# message text
+def message_text(text)
+    message = Pastel.new
+    puts message.bright_blue(text)
 end

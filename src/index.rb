@@ -8,6 +8,7 @@ require 'time'
 require 'terminal-table'
 require 'artii'
 require 'tty-prompt'
+require 'pastel'
 
 # Help method
 def help
@@ -116,11 +117,14 @@ def visualise_task
             year_art = Artii::Base.new
             table = Terminal::Table.new :title => "#{year_art.asciify(date)}", :rows => rows
             # print the table
-            puts table
+            background = Pastel.new
+            puts background.on_magenta(table)
             # count the array for the current year
-            puts "This task was successfully completed #{dates_array.count} times in #{date}"
+            # puts "This task was successfully completed #{dates_array.count} times in #{date}"
             # count the original array and output number of entries
-            puts "You have completed this task #{data_array.count} times overall"
+            message_text("This task was successfully completed #{dates_array.count} times in #{date}")
+            message_text("You have completed this task #{data_array.count} times overall")
+            # puts "You have completed this task #{data_array.count} times overall"
 
         else  # Clear the screen
             system("clear")
