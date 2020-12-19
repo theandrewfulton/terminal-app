@@ -97,8 +97,8 @@ end
 
 
 # select files
-def select_file
-    choices = ["return to main menu"]
+def select_file(question)
+    choices = []
     # list files in txt folder
     @filenames = Dir.entries(".")
     @filenames.delete_if {|task| task == '.'}
@@ -108,7 +108,7 @@ def select_file
         task.gsub!('.txt', '')
         choices << task
     end
-    @input = @prompt.select("Which task did you do?", choices)
+    @input = @prompt.select(question, choices)
 end
 
 # check if task is complete
@@ -133,7 +133,7 @@ def existing_tasks
     puts "Here are your tasks"
     # change directory to the text folder
     Dir.chdir("txt") do
-         select_file
+         select_file("Which task did you do?")
             if @filenames.include?(@input) == true
                 @input = @prompt.select("When did you complete #{@input}?") do |menu|
                     menu.choice "Today", 1
@@ -196,6 +196,27 @@ def existing_tasks
         # else  # Clear the screen
         #     system("clear")
         #     puts "Sorry, we couldn't find a task with that name"
+        end
+    end
+end
+
+
+# delete tasks method
+def delete_task
+    system("clear")
+     # change directory to the text folder
+    Dir.chdir("txt") do
+        select_file("Which task would you like to delete?")
+        text_file
+        # confirmation
+        prompt = TTY::Prompt.new
+        if prompt.yes?("Are you sure you want to delete #{@input}?")
+            File.delete(@file_name)
+            message_text("\nTask deleted\n")
+            # puts "\nTask deleted\n"
+        else
+            message_text("\nTask not deleted\n")
+            # puts "\Task not deleted\"
         end
     end
 end

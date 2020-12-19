@@ -133,47 +133,47 @@ def visualise_task
     end
 end
 
-# delete tasks method
-def delete_task
-    puts "Here are your tasks"
-    # change directory to the text folder
-    Dir.chdir("txt") do
-        # list files in txt folder
-        filenames = Dir.entries(".")
-        filenames.delete_if {|task| task == '.'}
-        filenames.delete_if {|task| task == '..'}
-        filenames.each do |task|
-            task.gsub!('_', ' ')
-            task.gsub!('.txt', '')
-        end
-        puts filenames
-        # select a file
-        puts "Which task would you like to delete?"
-        delete = gets.chomp
-        if filenames.include?(delete) == true
-            # ask for confirmation
-            puts "Are you sure you want to delete #{delete}? (Y/N)"
-            confirm = gets.chomp.downcase
-            if confirm == 'y'
-                # delete the file
-                file_name = delete + '.txt'
-                file_name.gsub!(' ', '_')
-                File.delete(file_name)
-                puts "Task deleted"
-                # Clear the screen
-            elsif
-                system("clear")
-                puts "Task not deleted"
-            else # Clear the screen
-                system("clear")
-                puts "Sorry, I didn't understand that. Please try again"
-            end
-        else  # Clear the screen
-            system("clear")
-            puts "Sorry, we couldn't find a task with that name"
-        end
-    end
-end
+# # delete tasks method
+# def delete_task
+#     puts "Here are your tasks"
+#     # change directory to the text folder
+#     Dir.chdir("txt") do
+#         # list files in txt folder
+#         filenames = Dir.entries(".")
+#         filenames.delete_if {|task| task == '.'}
+#         filenames.delete_if {|task| task == '..'}
+#         filenames.each do |task|
+#             task.gsub!('_', ' ')
+#             task.gsub!('.txt', '')
+#         end
+#         puts filenames
+#         # select a file
+#         puts "Which task would you like to delete?"
+#         delete = gets.chomp
+#         if filenames.include?(delete) == true
+#             # ask for confirmation
+#             puts "Are you sure you want to delete #{delete}? (Y/N)"
+#             confirm = gets.chomp.downcase
+#             if confirm == 'y'
+#                 # delete the file
+#                 file_name = delete + '.txt'
+#                 file_name.gsub!(' ', '_')
+#                 File.delete(file_name)
+#                 puts "Task deleted"
+#                 # Clear the screen
+#             elsif
+#                 system("clear")
+#                 puts "Task not deleted"
+#             else # Clear the screen
+#                 system("clear")
+#                 puts "Sorry, I didn't understand that. Please try again"
+#             end
+#         else  # Clear the screen
+#             system("clear")
+#             puts "Sorry, we couldn't find a task with that name"
+#         end
+#     end
+# end
 
 
 
