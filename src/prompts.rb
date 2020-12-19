@@ -40,7 +40,7 @@ end
 # new task method
 def new_task
     system("clear")
-    prompt = TTY::Prompt.new
+    @prompt = TTY::Prompt.new
     puts "What would you like to call this task?"
     @input = @prompt.ask("Please make it short and easy to remember",) do |q|
         q.required true
@@ -59,10 +59,8 @@ def new_task
             # create new file
             File.new(@file_name, "w+")
             success_text("Hooray, you're ready to #{@input} every day\n")
-            # puts "Hooray, you're ready to #{@input} every day"
         else
             error_text("Sorry, there is already a task with this name")
-            # puts "Sorry, there is already a task with this name"
         end
     end
 end
@@ -108,6 +106,8 @@ def select_file(question)
         task.gsub!('.txt', '')
         choices << task
     end
+    # create welcome menu variable - can this go in index.rb?
+    @prompt = TTY::Prompt.new
     @input = @prompt.select(question, choices)
 end
 
@@ -117,12 +117,12 @@ def check_task_complete
     current_data = File.read(@file_name)
     exists = current_data.include?(@date)
     if
-        current_data.include?(date) == false
-        current_data << date + ','
-        File.write(file_name, current_data)
-        puts current_data
+        current_data.include?(@date) == false
+        current_data << @date + ','
+        File.write(@file_name, current_data)
+        success_text("Task completed. Nice work!")
     else
-        puts "Whoops, looks like you've already marked this task complete on this day"
+        error_text("Whoops, looks like you've already marked this task complete on this day")
     end
 
 end
@@ -130,29 +130,37 @@ end
 # existing tasks method
 def existing_tasks
     system("clear")
-    puts "Here are your tasks"
     # change directory to the text folder
     Dir.chdir("txt") do
-         select_file("Which task did you do?")
-            if @filenames.include?(@input) == true
-                @input = @prompt.select("When did you complete #{@input}?") do |menu|
-                    menu.choice "Today", 1
-                    menu.choice "A different day", 2
-                    menu.choice "Go back", 3
-                end
-                case @input
-                when 1
-                    @date = Date.today.to_s
-                    check_task_complete
-                    current_data = File.read(@file_name)
-                when 2
-                when 3
-                end
-
-                puts "Did you complete this today or a different day?"
-            puts "1. Today"
-            puts "2. A different day"
-            input = gets.chomp.to_i
+        select_file("Which task did you do?")
+        selection = @prompt.select("When did you complete #{@input}?") do |menu|
+            menu.choice "Today", 1
+            menu.choice "A different day", 2
+            menu.choice "Go back", 3
+        end
+        case selection
+        when 1
+            @date = Date.today.to_s
+            check_task_complete
+        when 2
+            @date = @prompt.ask("please add the date you completed the task?", convert: :date)
+            if @date > Date.today
+                puts "Hey there time traveller! It looks like this is in the future"
+                puts "Please try again"
+            else
+                @date = @date.iso8601.to_s
+                check_task_complete
+            end
+        when 3
+            # need to revisit all the "back" options
+            menu_prompt
+        end
+    end
+end
+            #     puts "Did you complete this today or a different day?"
+            # puts "1. Today"
+            # puts "2. A different day"
+            # input = gets.chomp.to_i
         #     if input == 1
         #         date = Date.today.to_s
         #         file_name = complete + '.txt'
@@ -194,11 +202,8 @@ def existing_tasks
         #         puts "Sorry, we didn't understand that"
         #     end
         # else  # Clear the screen
-        #     system("clear")
-        #     puts "Sorry, we couldn't find a task with that name"
-        end
-    end
-end
+        #     system("clear")prompt = TTY::Prompt.newldn't find a task with that name"
+
 
 
 # delete tasks method
