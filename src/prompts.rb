@@ -41,10 +41,8 @@ def new_task
     @input = @prompt.ask("Please make it short and easy to remember",) do |q|
         q.required true
         q.modify :down, :chomp, :trim
-        # I can't get validate to work
-        # need to validate out everything that's no leters and numbers
-        # puts "Sorry, the name can't include a '.'"
         q.validate ->(input) { input =~ /^[a-zA-Z0-9\s]*$/}
+        q.messages[:valid?] = "Your tasks can only have letters, numbers and spaces in their names. Please try again"
     end
     # convert input to format for text file name
     text_file
@@ -61,35 +59,6 @@ def new_task
     end
 end
 
-
-
-# Old new task method
-# def new_task
-#     system("clear")
-#     puts "What would you like to call this task?"
-#     puts "Please make it short and easy to remember"
-#     task_name = gets.chomp.downcase
-#     dot = task_name.include? "."
-#     if dot == false
-#         file_name = task_name + '.txt'
-#         file_name.gsub!(' ', '_')
-#         # change into text subdirectory
-#         Dir.chdir('txt') do
-#             #does file already exist?
-#             if File.exist?(file_name) == false
-#                 # create new file
-#                 File.new(file_name, "w+")
-#                 puts "Hooray, you're ready to #{task_name} every day"
-#             else
-#                 puts "Sorry, there is already a task with this name"
-#             end
-#         end
-#     else
-#         puts "Sorry, the name can't include a '.'"
-#     end
-# end
-
-
 # select files
 def select_file(question)
     choices = []
@@ -105,22 +74,6 @@ def select_file(question)
     # create welcome menu variable - can this go in index.rb?
     @prompt = TTY::Prompt.new
     @input = @prompt.select(question, choices)
-end
-
-# check if task is complete
-def check_task_complete
-    text_file
-    current_data = File.read(@file_name)
-    exists = current_data.include?(@date)
-    if
-        current_data.include?(@date) == false
-        current_data << @date + ','
-        File.write(@file_name, current_data)
-        success_text("Task completed. Nice work!")
-    else
-        error_text("Whoops, looks like you've already marked this task complete on this day")
-    end
-
 end
 
 # existing tasks method
@@ -141,8 +94,8 @@ def existing_tasks
         when 2
             @date = @prompt.ask("please add the date you completed the task?", convert: :date)
             if @date > Date.today
-                puts "Hey there time traveller! It looks like this is in the future"
-                puts "Please try again"
+                error_text("Hey there time traveller! It looks like this is in the future")
+                error_text("Please try again")
             else
                 @date = @date.iso8601.to_s
                 check_task_complete
@@ -159,7 +112,6 @@ def visualise_task
     system("clear")
     # change directory to the text folder
     Dir.chdir("txt") do
-       
        select_file("Which task would you like to see?")
        text_file
     #    read file contents
@@ -231,11 +183,10 @@ def visualise_task
         background = Pastel.new
         puts background.on_magenta(table)
         # count the array for the current year
-        # puts "This task was successfully completed #{dates_array.count} times in #{date}"
         # count the original array and output number of entries
         message_text("This task was successfully completed #{dates_array.count} times in #{date}")
         message_text("You have completed this task #{data_array.count} times overall")
-        # puts "You have completed this task #{data_array.count} times overall"
+        @prompt.keypress("Press space or enter to continue", keys: [:space, :return])
     end
 end
 
@@ -251,34 +202,10 @@ def delete_task
         prompt = TTY::Prompt.new
         if prompt.yes?("Are you sure you want to delete #{@input}?")
             File.delete(@file_name)
-            message_text("\nTask deleted\n")
-            # puts "\nTask deleted\n"
+            success_text("\nTask deleted\n")
         else
             message_text("\nTask not deleted\n")
             # puts "\Task not deleted\"
         end
     end
-end
-
-
-
-
-
-
-# error text
-def error_text(text)
-    error = Pastel.new
-    puts error.white.on_red.bold(text)
-end
-
-# success text
-def success_text(text)
-    success = Pastel.new
-    puts success.black.on_bright_green.bold(text)
-end
-
-# message text
-def message_text(text)
-    message = Pastel.new
-    puts message.bright_blue(text)
 end
