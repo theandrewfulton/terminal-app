@@ -41,8 +41,8 @@ def new_task
     @input = @prompt.ask("Please make it short and easy to remember",) do |q|
         q.required true
         q.modify :down, :chomp, :trim
-        q.validate ->(input) { input =~ /^[a-zA-Z0-9\s]*$/}
-        q.messages[:valid?] = "Your tasks can only have letters, numbers and spaces in their names. Please try again"
+        q.validate ->(input) { input =~ /^[a-zA-Z0-9'\s]*$/}
+        q.messages[:valid?] = "Your tasks can only have letters, numbers, apostrophies and spaces in their names. Please try again"
     end
     # convert input to format for text file name
     text_file
@@ -85,14 +85,13 @@ def existing_tasks
         selection = @prompt.select("When did you complete #{@input}?") do |menu|
             menu.choice "Today", 1
             menu.choice "A different day", 2
-            menu.choice "Go back", 3
         end
         case selection
         when 1
             @date = Date.today.to_s
             check_task_complete
         when 2
-            @date = @prompt.ask("please add the date you completed the task?", convert: :date)
+            @date = @prompt.ask("please add the date you completed the task?", required: true, convert: :date)
             if @date > Date.today
                 error_text("Hey there time traveller! It looks like this is in the future")
                 error_text("Please try again")
@@ -100,9 +99,6 @@ def existing_tasks
                 @date = @date.iso8601.to_s
                 check_task_complete
             end
-        when 3
-            # need to revisit all the "back" options
-            menu_prompt
         end
     end
 end
@@ -187,6 +183,7 @@ def visualise_task
         message_text("This task was successfully completed #{dates_array.count} times in #{date}")
         message_text("You have completed this task #{data_array.count} times overall")
         @prompt.keypress("Press space or enter to continue", keys: [:space, :return])
+        system("clear")
     end
 end
 
