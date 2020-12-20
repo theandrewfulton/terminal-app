@@ -2,22 +2,8 @@ GEM
   remote: https://rubygems.org/
   specs:
     artii (2.1.2)
-    diff-lcs (1.4.4)
     pastel (0.8.0)
       tty-color (~> 0.5)
-    rspec (3.10.0)
-      rspec-core (~> 3.10.0)
-      rspec-expectations (~> 3.10.0)
-      rspec-mocks (~> 3.10.0)
-    rspec-core (3.10.0)
-      rspec-support (~> 3.10.0)
-    rspec-expectations (3.10.0)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.10.0)
-    rspec-mocks (3.10.0)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.10.0)
-    rspec-support (3.10.0)
     terminal-table (2.0.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
     tty-color (0.6.0)
@@ -39,7 +25,7 @@ PLATFORMS
 
 DEPENDENCIES
   artii (~> 2.1)
-  rspec (~> 3.10)
+  pastel (~> 0.8.0)
   terminal-table (~> 2.0)
   tty-prompt (~> 0.23.0)
 
