@@ -12,19 +12,25 @@ require 'pastel'
 
 # Help method
 def help
-message_text("Welcome to Daily Task Tracker! When you have finished with this help guide, you can open the application with ./install-run.sh
+message_text("Navigate through the menus using the arrow keys. Then use Enter to make a selection.
 
-Navigate through the menus using the arrow keys. Then use Enter to make a selection.
-
-When you are prompted to select a task, please ensure you type it exactly and then press Enter.
-
-If you type something Daily Task Tracker doesn't understand, you will be returned to the main menu.
-
-If you are prompted to type a date, please ensure it is in the format YYYY-MM-DD.
+When it comes to inputting dates, the application parses your input into ISO8601 format. It is rather good, however for the best experience please enter dates in the format 'YYYY-MM-DD'
 
 Some prompts may require you to answer Yes or No. In this case, you will need to type Y for Yes or N for No, followed by Enter.
 
-If you have any questions or need help, please contact the developer on Twitter at https://twitter.com/theandrewfulton
+The following command line prompts can also be used as a shortcut to the selection menu of each feature:
+- -n, --new
+    - Opens a dialogue allowing the user to add a new task to track. Once confirmed, opens the main menu.
+- -c, --complete
+    - Opens a dialogue allowing the user to select a task to mark as complete and prompts for the date. Application exits.
+- -v, --view
+    - Opens a dialogue allowing the user to select a task to see visualised. The calendar view is then shown. When the user is finished the application exits.
+- -d, --delete
+    - Opens a dialogue allowing the user to select a task to delete. Once confirmed, application exits.
+- -h , --help
+    - Displays this help section
+
+If you have any questions or need help, please see the README located in the application's main directory or contact the developer on Twitter at https://twitter.com/theandrewfulton
 
 Thank you and have fun!")
 end
@@ -39,7 +45,19 @@ def gets
 # command line arguments
 if ARGV[0] == "-h" || ARGV[0] == "--help"
 		puts help
-		exit
+    exit
+elsif ARGV[0] == "-c" || ARGV[0] == "--complete"
+  existing_tasks
+  exit
+elsif ARGV[0] == "-n" || ARGV[0] == "--new"
+  new_task
+  menu_prompt
+elsif ARGV[0] == "-v" || ARGV[0] == "--view"
+  visualise_task
+  exit
+elsif ARGV[0] == "-d" || ARGV[0] == "--delete"
+  delete_task
+  exit
 else
     menu_prompt
 end

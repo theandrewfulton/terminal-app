@@ -187,7 +187,6 @@ def visualise_task
     end
 end
 
-
 # delete tasks method
 def delete_task
     system("clear")
