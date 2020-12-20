@@ -12,19 +12,15 @@ require 'pastel'
 
 # Help method
 def help
-message_text("Welcome to Daily Task Tracker! When you have finished with this help guide, you can open the application with ./install-run.sh
+message_text("The information in this section can also be accessed with the commands: ```./install-run.sh --help``` and ```./install-run.sh -h```
 
 Navigate through the menus using the arrow keys. Then use Enter to make a selection.
 
-When you are prompted to select a task, please ensure you type it exactly and then press Enter.
-
-If you type something Daily Task Tracker doesn't understand, you will be returned to the main menu.
-
-If you are prompted to type a date, please ensure it is in the format YYYY-MM-DD.
+When it comes to inputting dates, the application parses your input into ISO8601 format. It is rather good, however for the best experience please enter dates in the format "YYYY-MM-DD"
 
 Some prompts may require you to answer Yes or No. In this case, you will need to type Y for Yes or N for No, followed by Enter.
 
-If you have any questions or need help, please contact the developer on Twitter at https://twitter.com/theandrewfulton
+If you have any questions or need help, please contact the developer on Twitter at [twitter.com/theandrewfulton](https://twitter.com/theandrewfulton)
 
 Thank you and have fun!")
 end
