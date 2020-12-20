@@ -1,5 +1,0 @@
-Simone Yetch
-Describe the problem
-Target Audience
-discuss code structure in walkthrough - I need to present the code
-mention testing in build process
