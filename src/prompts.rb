@@ -30,10 +30,6 @@ def menu_prompt
         when 5
             message_text("\nGoodbye\n")
             exit
-        # else
-        #     system("clear")
-        #     puts "I didn't understand that. Please try again"
-        #     # menu
     end
 end
 
@@ -48,7 +44,7 @@ def new_task
         # I can't get validate to work
         # need to validate out everything that's no leters and numbers
         # puts "Sorry, the name can't include a '.'"
-        # q.validate [^./]
+        q.validate ->(input) { input =~ /^[a-zA-Z0-9\s]*$/}
     end
     # convert input to format for text file name
     text_file
@@ -157,53 +153,91 @@ def existing_tasks
         end
     end
 end
-            #     puts "Did you complete this today or a different day?"
-            # puts "1. Today"
-            # puts "2. A different day"
-            # input = gets.chomp.to_i
-        #     if input == 1
-        #         date = Date.today.to_s
-        #         file_name = complete + '.txt'
-        #         file_name.gsub!(' ', '_')
-        #         current_data = File.read(file_name)
-        #         # this is currently a string, need to work on staring as an array
-        #         if
-        #             current_data.include?(date) == false
-        #             current_data << date + ','
-        #             File.write(file_name, current_data)
-        #             puts current_data
-        #         else puts "Whoops, looks like you've already marked this task complete on this day"
-        #         end
-        #     elsif input == 2
-        #        green puts "Please add the date you completed the task in the format YYYY-MM-DD"
-        #         # exception handling when date input doesn't meet ISO8601 format
-        #         begin
-        #             date = Date.iso8601(gets)
-        #         rescue
-        #             puts "Whoops, we didn't get that. Please make sure the date is in YYYY-MM-DD format"
-        #             puts "e.g. 2020-12-18"
-        #         end
-        #         if date > Date.today
-        #             puts "Hey there time traveller! It looks like this is in the future"
-        #             puts "Please try again"
-        #         else 
-        #             file_name = complete + '.txt'
-        #             file_name.gsub!(' ', '_')
-        #             current_data = File.read(file_name)
-        #             # this is currently a string, need to work on staring as an array
-        #             if current_data.include?(date.to_s) == false
-        #                 current_data << date.to_s + ','
-        #                 File.write(file_name, current_data)
-        #                 else puts "Whoops, looks like you've already marked this task complete on this day"
-        #             end
-        #        green end
-        #     else  # Clear the screen
-        #         system("clear")
-        #         puts "Sorry, we didn't understand that"
-        #     end
-        # else  # Clear the screen
-        #     system("clear")prompt = TTY::Prompt.newldn't find a task with that name"
 
+# visualise tasks method
+def visualise_task
+    system("clear")
+    # change directory to the text folder
+    Dir.chdir("txt") do
+       
+       select_file("Which task would you like to see?")
+       text_file
+    #    read file contents
+       current_data = File.read(@file_name)
+        # convert file contents to array
+        data_array = current_data.split(',')
+        dates_array = []
+        data_array.each do |date|
+            dates_array << date.split('-')
+        end
+        # ignore all array entries that aren't for the current year
+        date = Time.new
+        date = date.strftime('%Y')
+        dates_array.delete_if {|year| year[0] != date}
+        # keep the month entry
+        dates_array.each do |date|
+            date.delete_at(0)
+            date.delete_at(1)
+        end
+        # flatten the array to a single level
+        dates_array =  dates_array.flatten(1)
+        # Month arrays
+        january = ["January", ""]
+        february = ["February", ""]
+        march = ["March", ""]
+        april = ["April", ""]
+        may = ["May", ""]
+        june = ["June", ""]
+        july = ["July", ""]
+        august = ["August", ""]
+        september = ["September", ""]
+        october = ["October", ""]
+        november = ["November", ""]
+        december = ["December", ""]
+        # For every entry, add an asterisk (*) in index position 1 of the corresponding month array
+        dates_array.each do |month|
+            if month == '01'
+                january[1] += " * "
+            elsif month == '02'
+                february[1] += " * "
+            elsif month == '03'
+                march[1] += " * "
+            elsif month == '04'
+                april[1] += " * "
+            elsif month == '05'
+                may[1] += " * "
+            elsif month == '06'
+                june[1] += " * "
+            elsif month == '07'
+                july[1] += " * "
+            elsif month == '08'
+                august[1] += " * "
+            elsif month == '09'
+                september[1] += " * "
+            elsif month == '10'
+                october[1] += " * "
+            elsif month == '11'
+                november[1] += " * "
+            elsif month == '12'
+                december[1] += " * "
+            end
+        end
+        # add each month array to the rows array for terminal-table
+        rows = [january, february, march, april, may, june, july, august, september, october, november, december]
+        # create the table with the year in the title using Artii
+        year_art = Artii::Base.new
+        table = Terminal::Table.new :title => "#{year_art.asciify(date)}", :rows => rows
+        # print the table
+        background = Pastel.new
+        puts background.on_magenta(table)
+        # count the array for the current year
+        # puts "This task was successfully completed #{dates_array.count} times in #{date}"
+        # count the original array and output number of entries
+        message_text("This task was successfully completed #{dates_array.count} times in #{date}")
+        message_text("You have completed this task #{data_array.count} times overall")
+        # puts "You have completed this task #{data_array.count} times overall"
+    end
+end
 
 
 # delete tasks method
@@ -225,6 +259,10 @@ def delete_task
         end
     end
 end
+
+
+
+
 
 
 # error text
