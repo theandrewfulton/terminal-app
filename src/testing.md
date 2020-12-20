@@ -35,7 +35,7 @@ Should present "Hooray, you're ready to walk for 30 minutes every day"
 1. Select "Create a new task to track"
 1. input "Make Andrew’s bed"
 
-Should present "Hooray, you're ready to walk for 30 minutes every day"
+Should present "Hooray, you're ready to make andrew's bed every day"
 
 Once the task has been created. A corresponding text file will appear in the “txt” directory. The spaces will be replaced with underscored and the extension “.txt” added.
 - walk_for_30_minutes.txt
